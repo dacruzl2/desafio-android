@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation project(':shared-assets')
+
     implementation domainDependencies.kotlin
     implementation appDependencies.appCompat
     implementation appDependencies.androidxKtx
