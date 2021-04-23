@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.picpay.desafio.android.feature_contacts.databinding.ActivityUsersBinding
 import com.picpay.desafio.android.feature_contacts.models.UserPresentation
 import com.picpay.desafio.android.shared_utilities.gone
+import com.picpay.desafio.android.shared_utilities.invisible
 import com.picpay.desafio.android.shared_utilities.viewBinding
 import com.picpay.desafio.android.shared_utilities.visible
 import kotlinx.coroutines.delay
@@ -71,9 +72,13 @@ class UserActivity : AppCompatActivity() {
                 toast(userPresentation.name)
             }
 
-
             usersSwipeToRefresh.isRefreshing = false
             usersRecyclerView.adapter = adapter
+
+            appBar.visible()
+            toolbar.visible()
+            rootLayoutTextInput.visible()
+            queryTextInput.visible()
 
             input.run {
                 setOnEditorActionListener { _, actionId, _ ->
@@ -126,6 +131,8 @@ class UserActivity : AppCompatActivity() {
 
     private fun startExecution() {
         viewBindings.run {
+            rootLayoutTextInput.visible()
+            appBar.visible()
             errorStateView.gone()
             usersSwipeToRefresh.isRefreshing = true
         }

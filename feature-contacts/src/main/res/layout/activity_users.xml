@@ -4,19 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
-        style="@style/AppTheme"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -24,7 +25,6 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="Contatos"
             app:titleTextColor="@android:color/white" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -41,6 +41,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/rootLayoutTextInput"
+                android:visibility="gone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -61,6 +62,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/queryTextInput"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"
@@ -79,14 +81,16 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rootLayoutTextInput"
+                app:layout_constraintVertical_bias="0.0"
                 tools:listitem="@layout/list_item_user" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorStateView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -99,16 +103,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <ImageView
             android:id="@+id/errorStateImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/img_no_results" />
 
         <TextView
@@ -119,6 +122,9 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/material_on_primary_emphasis_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/errorStateImage"
             tools:text="Sorry, no results for this search." />
 
         <Button
@@ -126,13 +132,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="retry" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:text="tentar novamente"
+            app:layout_constraintEnd_toEndOf="@+id/errorStateImage"
+            app:layout_constraintStart_toStartOf="@+id/errorStateImage"
+            app:layout_constraintTop_toBottomOf="@+id/errorStateLabel" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
