@@ -31,6 +31,9 @@ android {
 }
 
 dependencies {
+    // https://youtrack.jetbrains.com/issue/KT-45885
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.2.0")
+
     implementation project(':domain')
 
     implementation domainDependencies.kotlin
