@@ -11,8 +11,8 @@ val restPicpayModule by lazy {
     module {
         single {
             NetworkBuilder<PicPayUserService>(
-                okHttpClient = OkhttpBuilder(),
-                url = PicPayUserService.API_URL
+                url = PicPayUserService.API_URL,
+                okHttpClient = OkhttpBuilder()
             )
         }
 

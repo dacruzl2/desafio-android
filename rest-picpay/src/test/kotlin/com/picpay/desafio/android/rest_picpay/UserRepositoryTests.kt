@@ -11,6 +11,17 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+fun unwrapCaughtError(result: Result<*>) =
+    result.exceptionOrNull()
+        ?.let { it }
+        ?: throw IllegalArgumentException("Not an error")
+
+fun assertErrorTransformed(expected: Throwable, whenRunning: () -> Any) {
+    val result = runCatching { whenRunning.invoke() }
+    val unwrapped = unwrapCaughtError(result)
+    assertThat(unwrapped).isEqualTo(expected)
+}
+
 internal class UserRepositoryTests {
 
     @get:Rule
@@ -28,11 +39,11 @@ internal class UserRepositoryTests {
 
         rule.defineScenario(
             status = 200,
-            response = loadResource("200_search_no_results.json")
+            response = loadResource("200_no_results.json")
         )
 
-        val noFacts = emptyList<User>()
-      //  assertThat(simpleSearch()).isEqualTo(noFacts)
+        val noUsers = emptyList<User>()
+        assertThat(simpleSearch()).isEqualTo(noUsers)
     }
 
     @Test
@@ -45,10 +56,10 @@ internal class UserRepositoryTests {
 
         assertThat(RemoteServiceError.ClientOrigin)
 
-       //assertErrorTransformed(
-       //    whenRunning = this::simpleSearch,
-       //    expected = RemoteServiceIntegrationError.ClientOrigin
-       //)
+        assertErrorTransformed(
+            whenRunning = this::simpleSearch,
+            expected = RemoteServiceError.ClientOrigin
+        )
     }
 
     @Test
@@ -58,10 +69,10 @@ internal class UserRepositoryTests {
             status = 500
         )
 
-        //assertErrorTransformed(
-        //    whenRunning = this::simpleSearch,
-        //    expected = RemoteServiceIntegrationError.RemoteSystem
-        //)
+        assertErrorTransformed(
+            whenRunning = this::simpleSearch,
+            expected = RemoteServiceError.RemoteSystem
+        )
     }
 
     @Test
@@ -69,40 +80,13 @@ internal class UserRepositoryTests {
 
         rule.defineScenario(
             status = 200,
-            response = loadResource("200_search_broken_contract.json")
-
+            response = loadResource("200_list_users_broken_contract.json")
         )
 
-       //assertErrorTransformed(
-       //    whenRunning = this::simpleSearch,
-       //    expected = RemoteServiceIntegrationError.UnexpectedResponse
-       //)
-    }
-
-    @Test
-    fun `should fetch facts with valid query term`() {
-
-        rule.defineScenario(
-            status = 200,
-            response = loadResource("200_search_with_results.json")
+        assertErrorTransformed(
+            whenRunning = this::simpleSearch,
+            expected = RemoteServiceError.UnexpectedResponse
         )
-
-        val users = listOf(
-            User(
-                id = 1001,
-                username = "@leonardo",
-                name = "Leonardo Cruz",
-                img = "https://randomuser.me/api/portraits/men/9.jpg"
-            ),
-            User(
-                id = 1002,
-                username = "@simone",
-                name = "Simone Cruz",
-                img = "https://randomuser.me/api/portraits/men/10.jpg"
-            )
-        )
-
-       //  assertThat(simpleSearch()).isEqualTo(users)
     }
 
     @Test
@@ -124,7 +108,7 @@ internal class UserRepositoryTests {
                 id = 1002,
                 username = "@simone",
                 name = "Simone Cruz",
-                img = "https://randomuser.me/api/portraits/men/10.jpg"
+                img = "https://randomuser.me/api/portraits/women/37.jpg"
             )
         )
 
@@ -135,28 +119,7 @@ internal class UserRepositoryTests {
         assertThat(remoteUsers).isEqualTo(expected)
     }
 
-  //@Test
-  //fun `should fetch categories`() {
-
-  //    rule.defineScenario(
-  //        status = 200,
-  //        response = loadResource("200_categories.json")
-  //    )
-
-  //    val expected = listOf(
-  //        Available("career"),
-  //        Available("celebrity"),
-  //        Available("dev")
-  //    )
-
-  //    val categories = runBlocking {
-  //        infrastructure.availableCategories()
-  //    }
-
-  //    assertThat(categories).isEqualTo(expected)
-  //}
-
-  // private fun simpleSearch() = runBlocking {
-  //     infrastructure.fetchFacts("Norris")
-  // }
+    private fun simpleSearch() = runBlocking {
+        repository.getUsers()
+    }
 }

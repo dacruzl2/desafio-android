@@ -23,10 +23,7 @@ internal class UserRepositoryRule : ExternalResource() {
             .addInterceptor(HttpLoggingInterceptor())
             .build()
 
-        api = NetworkBuilder(
-            url = url.toHttpUrl().toString(),
-            okHttpClient = client
-        ).create(PicPayUserService::class.java)
+        api = NetworkBuilder<PicPayUserService>(url = url.toHttpUrl().toString(), okHttpClient = client)
     }
 
     override fun after() {

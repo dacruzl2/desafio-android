@@ -10,7 +10,6 @@ android {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -35,6 +34,8 @@ android {
 }
 
 dependencies {
+
+    implementation project(':shared-assets')
 
     implementation domainDependencies.kotlin
     implementation appDependencies.appCompat
