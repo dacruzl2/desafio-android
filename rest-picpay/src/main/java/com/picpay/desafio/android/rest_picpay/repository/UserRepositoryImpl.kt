@@ -12,5 +12,4 @@ class UserRepositoryImpl(
         managedExecution {
             rest.getUsers().toDomain()
         }
-
 }
