@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.hiya:jacoco-android:0.2'
+        classpath "com.vanniktech:gradle-android-junit-jacoco-plugin:0.16.0"
     }
 }
 
@@ -27,4 +27,13 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: "com.vanniktech.android.junit.jacoco"
+junitJacoco {
+    jacocoVersion = '0.8.6' // type String
+    ignoreProjects = [] // type String array
+    excludes // type String List
+    includeNoLocationClasses = false // type boolean
+    includeInstrumentationCoverageInMergedReport = false // type boolean
 }
