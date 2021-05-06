@@ -1,4 +1,5 @@
 # PicPay - Desafio Android
+[![codecov](https://codecov.io/gh/dacruzl2/desafio-android/branch/develop/graph/badge.svg?token=V1G56LBP2O)](https://codecov.io/gh/dacruzl2/desafio-android)
 
 <img src="https://github.com/mobilepicpay/desafio-android/blob/master/desafio-picpay.gif" width="300"/>
 
