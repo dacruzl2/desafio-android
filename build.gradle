@@ -11,6 +11,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.vanniktech:gradle-android-junit-jacoco-plugin:0.16.0"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.14.2"
     }
 }
 
@@ -31,9 +32,20 @@ task clean(type: Delete) {
 
 apply plugin: "com.vanniktech.android.junit.jacoco"
 junitJacoco {
-    jacocoVersion = '0.8.6' // type String
-    ignoreProjects = [] // type String array
-    excludes // type String List
-    includeNoLocationClasses = false // type boolean
-    includeInstrumentationCoverageInMergedReport = false // type boolean
+    jacocoVersion = '0.8.6'
+    includeNoLocationClasses = true
+    includeInstrumentationCoverageInMergedReport = true
+}
+
+apply plugin: "io.gitlab.arturbosch.detekt"
+detekt {
+    input = files("${rootProject.projectDir}/app")
+    buildUponDefaultConfig = true
+    ignoreFailures = true
+    autoCorrect = true
+    parallel = true
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 }
